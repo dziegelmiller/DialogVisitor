@@ -1,0 +1,56 @@
+﻿    <Window x:Class="DialogVisitorView.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DialogVisitorView"
+        xmlns:vm="clr-namespace:DialogVisitorView.ViewModel"
+        mc:Ignorable="d"
+        Title="Dialog Visitor Demo" Name="mainWindow" Height="393.405" Width="585.09" Loaded="MainWindow_Loaded">
+    <Window.Resources>
+        <!-- Create the view model classes and make them resources -->
+        <vm:ViewPersons x:Key="viewPersons" />
+        <vm:ViewVehicles x:Key="viewVehicles"/>
+    </Window.Resources>
+    <Grid Margin="0,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <!-- construct the persons side of the main window -->
+        <DataGrid Name="PersonGrid" 
+                  DataContext="{Binding Source={StaticResource viewPersons}}" 
+                  ItemsSource="{Binding PersonListView}" 
+                  IsSynchronizedWithCurrentItem="true"
+                  CanUserAddRows="False"
+                  SelectionChanged="PersonGrid_Selected"
+                  HorizontalAlignment="Left" Height="270" Margin="5,10,0,0" VerticalAlignment="Top" Width="273"/>
+        <StackPanel HorizontalAlignment="Left" Height="48" Margin="10,7,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100"
+                    DataContext="{Binding Source={StaticResource viewPersons}}">
+            <!--Note that in MVVM toolkit, commands must end in "Command" to be recognized.-->
+            <Button Name="AddPersonBtn" Content="Add Person" Command="{Binding CreatePersonCommand}"/>
+            <Button Name="UpdatePersonBtn" Content="Update Person" Command="{Binding UpdatePersonCommand}"/>
+        </StackPanel>
+        <!-- Construct the vehicles side -->
+        <DataGrid Name="VehicleGrid" 
+              DataContext="{Binding Source={StaticResource viewVehicles}}"
+              ItemsSource="{Binding VehicleListView}"
+                  IsSynchronizedWithCurrentItem="true"
+                  CanUserAddRows="False"
+                  SelectionChanged="VehicleGrid_SelectionChanged"
+              Grid.Column="1" HorizontalAlignment="Left" Margin="5,10,0,10" Width="273"/>
+        <StackPanel HorizontalAlignment="Left" Height="48" Margin="10,7,0,0" 
+                    Grid.Row="1" Grid.Column="1"
+                    VerticalAlignment="Top" Width="100"
+                    DataContext="{Binding Source={StaticResource viewVehicles}}">
+            <!--Note that in MVVM toolkit, commands must end in "Command" to be recognized.-->
+            <Button Name="AddVehicleBtn" Content="Add Vehicle" Command="{Binding CreateVehicleCommand}"/>
+            <Button Name="UpdateVehicleBtn" Content="Update Vehicle" Command="{Binding UpdateVehicleCommand}"/>
+        </StackPanel>
+
+    </Grid>
+</Window>
